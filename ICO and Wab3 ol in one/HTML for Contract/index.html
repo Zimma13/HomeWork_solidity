@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8">
+  <title>Zimma Coin Sender</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="web3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+  <style>
+  p {
+    color:  #5a3e7a;
+  }
+
+  .heading {
+    color: #5a3e7a;
+    font-size: 64;
+  }
+
+  input {
+    display: block;
+    text-align: left;
+    color: #5a3e7a;
+  }
+  input:-moz-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  input::-moz-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  input:-ms-input-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  input::-webkit-input-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  </style>
+ </head>
+
+ <body>
+   <p>
+    <div class="heading" align="center">
+      <B> Вы можете отправить сообшение за 10 Zimma Coin </b>
+        <p>
+    </div>
+
+      </div>
+      <div class="heading" align="center">
+        <img src="coinZimma.jpg" alt="Zimma Coin" height="260" width="260">
+
+      </div>
+      <div class="heading" align="center">
+        <P>
+          <input style="width: 250px; height: 20px" type="text" placeholder="Введите текст сообщения" id="inputString">
+      </div>
+
+      <div align="center">
+      <div class="sendButton" align="center" style="cursor: pointer; background-color: #5a3e7a; width: 150px; height: 20px" >
+        <font color="White"> Отправить! </font>
+      </div></div>
+      <script>
+
+          $(".sendButton").click(function(){
+
+              let Web3 = require('web3');
+              if (typeof web3 !== 'undefined'){
+                  web3 = new Web3(web3.currentProvider);
+              }
+              else {
+                  alert('You have to install MetaMask !');
+              }
+
+              const abi = [
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "token",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "price",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "message",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "lastDonator",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "previouseOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransfered",
+		"type": "event"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_message",
+				"type": "string"
+			}
+		],
+		"name": "setMassage",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "setPrice",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "_token",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
+];
+              const contractAddress = "0xA720A1F311511a12f8DA10caEd5449F8304962DB";
+              let MyContract = web3.eth.contract(abi);
+              let myContractInstance = MyContract.at(contractAddress);
+              let functionData = myContractInstance.setMassage.getData($('#inputString').val());
+              web3.eth.sendTransaction({
+                to: contractAddress,
+                from: web3.eth.accounts[0],
+                data: functionData,
+              },
+              function(error, response){
+                console.log(response);
+              });
+          });
+
+      </script>
+ </body>
+</html>

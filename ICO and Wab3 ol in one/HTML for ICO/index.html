@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+ <head>
+  <meta charset="utf-8">
+  <title>ICO Zimma Coin</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="web3.js"></script>
+  <style>
+  p {
+    color:  #5a3e7a;
+  }
+
+  .heading {
+    color: #5a3e7a;
+    font-size: 64;
+  }
+
+  input {
+    display: block;
+    text-align: left;
+    color: #5a3e7a;
+  }
+  input:-moz-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  input::-moz-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  input:-ms-input-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  input::-webkit-input-placeholder {
+    color: #999999;
+    text-align: center;
+  }
+  </style>
+ </head>
+
+ <body>
+   <p>
+    <div class="heading" align="center">
+      <B> Здесь Вы можете купить Zimma Coin </b>
+        <p>
+    </div>
+
+      </div>
+      <div class="heading" align="center">
+        <img src="coinZimma.jpg" alt="Zimma Coin" height="260" width="260">
+
+      </div>
+      <div class="heading" align="center">
+        <P>
+          <input style="width: 250px; height: 20px" type="text" placeholder="Введите кол-во эфира" id="inputEthers">
+      </div>
+
+      <div align="center">
+      <div class="sendButton" align="center" style="cursor: pointer; background-color: #5a3e7a; width: 150px; height: 20px" >
+        <font color="White"> Купить! </font>
+      </div></div>
+
+      <script>
+
+          $(".sendButton").click(function(){
+
+              let Web3 = require('web3');
+              if (typeof web3 !== 'undefined'){
+                  web3 = new Web3(web3.currentProvider);
+              }
+              else {
+                  alert('You have to install MetaMask !');
+              }
+
+              const abi = [ { "constant": true, "inputs": [], "name": "buyPrice", "outputs": [ { "name": "", "type": "uint256", "value": "1000000000000000" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "buy", "outputs": [ { "name": "", "type": "uint256" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [], "name": "token", "outputs": [ { "name": "", "type": "address", "value": "0x0f8270f3e9db1dd90f19a9ee2a6a75f0c3ef9447" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [ { "name": "_token", "type": "address" } ], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "payable": true, "stateMutability": "payable", "type": "fallback" } ];
+              const contractAddress = "0xEad19650Cf33A34e33b3A5A1Bb0804f6311cED15";
+              let MyContract = web3.eth.contract(abi);
+              let myContractInstance = MyContract.at(contractAddress);
+
+              web3.eth.sendTransaction({
+                      to: contractAddress,
+                      from: web3.eth.accounts[0],
+                      value: web3.toWei($('#inputEthers').val(), "ether")
+                  },
+                  function(error){
+                      console.log(error);
+                  }
+              );
+          });
+
+          $(".sendFunctionButton").click(function(){
+
+              let Web3 = require('web3');
+              if (typeof web3 !== 'undefined'){
+                  web3 = new Web3(web3.currentProvider);
+              }
+              else {
+                  alert('You have to install MetaMask !');
+              }
+
+              const abi = [ { "constant": true, "inputs": [], "name": "buyPrice", "outputs": [ { "name": "", "type": "uint256", "value": "1000000000000000" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [], "name": "buy", "outputs": [ { "name": "", "type": "uint256" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [], "name": "token", "outputs": [ { "name": "", "type": "address", "value": "0x0f8270f3e9db1dd90f19a9ee2a6a75f0c3ef9447" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "inputs": [ { "name": "_token", "type": "address" } ], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "payable": true, "stateMutability": "payable", "type": "fallback" } ];
+              const contractAddress = "0xEad19650Cf33A34e33b3A5A1Bb0804f6311cED15";
+              let MyContract = web3.eth.contract(abi);
+              let myContractInstance = MyContract.at(contractAddress);
+              let functionData = myContractInstance.buy.getData();
+              web3.eth.sendTransaction({
+                      to:contractAddress,
+                      from:web3.eth.accounts[0],
+                      data: functionData,
+                      value: web3.toWei($('#inputEthers').val(), "ether")
+                  },
+                  function(error){
+                      console.log(error);
+                  });
+          });
+
+      </script>
+ </body>
+</html>
